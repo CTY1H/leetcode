@@ -1,0 +1,51 @@
+给你两个二进制字符串，返回它们的和（用二进制表示）。
+
+输入为 非空 字符串且只包含数字 1 和 0。
+
+ 
+
+示例 1:
+
+输入: a = "11", b = "1"
+输出: "100"
+示例 2:
+
+输入: a = "1010", b = "1011"
+输出: "10101"
+ 
+
+提示：
+
+每个字符串仅由字符 '0' 或 '1' 组成。
+1 <= a.length, b.length <= 10^4
+字符串如果不是 "0" ，就都不含前导零。
+
+
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        a = list(a)
+        b = list(b)
+        if len(a) > len(b):
+            length = len(a)
+            for i in range(len(a) - len(b)):
+                b.insert(0,'0')
+        else:
+            length = len(b)
+            for i in range(len(b) - len(a)):
+                a.insert(0,'0')
+        c = []
+        for i in range(length):
+            c.append(0)
+        for i in range(-1,-length - 1,-1):
+            c[i] = int(a[i]) + int(b[i]) + c[i]
+            if c[i] >= 2 and i - 1 >= -length:
+                c[i - 1] += 1
+                c[i] = c[i] - 2
+        if(c[0] >= 2):
+            temp = c[0]
+            c.insert(0,1)
+            c[1] = temp - 2
+        for i,j in enumerate(c):
+            c[i] = str(c[i])
+        d = "".join(c)
+        return d
